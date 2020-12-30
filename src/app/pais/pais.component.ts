@@ -25,7 +25,7 @@ export class PaisComponent {
   faEdit=faEdit;
   faTrashAlt = faTrashAlt;
   faSort = faSort;
-
+  pais:Pais={codigo:11 , pais:'VIETNAM', estatus:'A'};
 
   paises$: Observable<Pais[]>;
   total$: Observable<number>;
@@ -38,6 +38,7 @@ export class PaisComponent {
   }
 
 onUpdate(){
+  this.service.addPaises(this.pais);
   this.modalService.open(CreateUpdatePaisComponent);
 }
 

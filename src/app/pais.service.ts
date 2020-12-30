@@ -54,7 +54,8 @@ function matches(pais: Pais, term: string, pipe: PipeTransform) {
 })
 export class PaisService {
   private paisesUrl = 'api/paises'
-  pais:Pais;
+  pais:Pais={codigo:11 , pais:'VIETNAM', estatus:'A'};
+  listaPais:Pais[] = PAISES;
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _paises$ = new BehaviorSubject<Pais[]>([]);
@@ -84,7 +85,7 @@ private _state: State = {
     this._search$.next();
   }//FIN DEL CONSTRUCTOR
 
-  get paises$() { return this._paises$.asObservable(); }
+  get paises$() { this.getPaises(); return this._paises$.asObservable(); }
   get total$() { return this._total$.asObservable(); }
   get loading$() { return this._loading$.asObservable(); }
   get page() { return this._state.page; }
@@ -115,13 +116,23 @@ private _state: State = {
     // 3. paginate
     paises = paises.slice((page - 1) * pageSize, (page - 1) * pageSize + pageSize);
     return of({paises, total});
+
+
   }
 
 /*-----------------------------------------------------------------------------------*/
 /** GET heroes from the server */
 getPaises (): Observable<Pais[]> {
+  console.log(PAISES);
   return this.http.get<Pais[]>('');
+  
+};
+
+addPaises(newPais:Pais){
+  this.listaPais.push(newPais);
+  console.log(PAISES);
 }
+
 
 
 }//FIN DE LA CLASE

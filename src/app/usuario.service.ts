@@ -2,8 +2,9 @@ import { Injectable, PipeTransform } from '@angular/core';
 import {Usuario} from './Modelo/usuario';
 import {USUARIOS} from './mock-usuarios';
 import {SortDirection} from './sortable.directive';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 
-import {BehaviorSubject, Observable, of, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, of, Subject,throwError as observableThrowError} from 'rxjs';
 import {DecimalPipe} from '@angular/common';
 import {debounceTime, delay, switchMap, tap} from 'rxjs/operators';
 
@@ -48,6 +49,7 @@ function compare(v1,v2){
 @Injectable({providedIn: 'root'})
 export class UsuarioService {
 
+  usuarios:Usuario[]=[];
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _usuarios$ = new BehaviorSubject<Usuario[]>([]);
@@ -60,7 +62,7 @@ private _state: State = {
     sortColumn: '',
     sortDirection: ''
   };
-   constructor(private pipe: DecimalPipe) {
+   constructor(private pipe: DecimalPipe,private http:HttpClient) {
     this._search$.pipe(
       tap(() => this._loading$.next(true)),
       debounceTime(200),
@@ -73,6 +75,13 @@ private _state: State = {
     });
 
     this._search$.next();
+
+     console.log("shared USUARIO service started");
+
+     this.getData().subscribe(data=>{
+      this.usuarios=data
+      console.log(data);
+    });
   }//fin del constructor
 
   get usuarios$() { return this._usuarios$.asObservable(); }
@@ -97,7 +106,9 @@ private _state: State = {
     const {sortColumn, sortDirection, pageSize, page, searchTerm} = this._state;
 
     // 1. sort
-    let usuarios = sort(USUARIOS, sortColumn, sortDirection);
+    let usuarios = sort(this.usuarios, sortColumn, sortDirection);
+    console.log("usuarios");
+    console.log(usuarios);
 
     // 2. filter
     usuarios = usuarios.filter(usuario => matches(usuario, searchTerm, this.pipe));
@@ -108,6 +119,27 @@ private _state: State = {
     return of({usuarios, total});
   }
 
+/****************************************************************************************/
+getData(): Observable<Usuario[]>{
+  return this.http.
+  get<Usuario[]>('http://my-json-server.typicode.com/magabrielaucla/user/usuario');
+}
 
+/*setListaUsuario():{
+   getData().subscribe(usuarios=> this.listaUsuario=usuarios);
+}*/
 
 }//fin de la clase
+
+
+/*
+
+https://stackblitz.com/edit/angular-pvwotr?file=src%2Fapp%2Fapp.component.ts
+
+setHttpHeaders(){
+  const headers = new HttpHeaders()
+      .set("Content-Type", "application/json");
+    let options = { headers: headers };
+    return options;
+}
+*/

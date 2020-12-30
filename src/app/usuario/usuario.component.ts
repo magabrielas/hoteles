@@ -1,5 +1,5 @@
 import {DecimalPipe} from '@angular/common';
-import {Component, QueryList, ViewChildren} from '@angular/core';
+import {Component, QueryList, ViewChildren,OnInit} from '@angular/core';
 import {Observable} from 'rxjs';
 
  import {Usuario} from '../Modelo/usuario';
@@ -15,7 +15,7 @@ import { faPlusCircle, faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-ico
   providers: [UsuarioService, DecimalPipe]
 
 })
-export class UsuarioComponent  {
+export class UsuarioComponent implements OnInit  {
   /*Para usar los iconos de fontawesome*/
   faPlusCircle=faPlusCircle; 
   faEdit=faEdit;
@@ -24,14 +24,19 @@ export class UsuarioComponent  {
 
   usuarios$: Observable<Usuario[]>;
   total$: Observable<number>;
+  user : Usuario[]=[];
 
 @ViewChildren(SortableDirective) headers: QueryList<SortableDirective>;
 
-  constructor(public service: UsuarioService) {
+  constructor(private service: UsuarioService) {
     this.usuarios$ = service.usuarios$;
     this.total$ = service.total$;
+    
   }
   
+ngOnInit(): void {
+   
+  }
 
 onSort({column, direction}: SortEvent) {
     // resetting other headers
@@ -46,3 +51,24 @@ onSort({column, direction}: SortEvent) {
   }
 
 }//fin de la clase
+
+
+/*
+VER SI ESTA TRAYENDO EL JSON, COLOCARLO EN ONINIT
+
+ this.service.getData().subscribe(
+      response => {
+        alert("Response");
+        console.log(response);
+      },
+      error => {
+        alert("Error");
+        console.log(error);
+      }
+    );
+
+    this.service.getData().subscribe(data=>{
+      this.user=data
+      console.log(data);
+    });
+    */
