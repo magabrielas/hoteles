@@ -49,7 +49,7 @@ function compare(v1,v2){
 @Injectable({providedIn: 'root'})
 export class UsuarioService {
 
-  usuarios:Usuario[]=[];
+  usuarios:Usuario[]=USUARIOS;
   private _loading$ = new BehaviorSubject<boolean>(true);
   private _search$ = new Subject<void>();
   private _usuarios$ = new BehaviorSubject<Usuario[]>([]);

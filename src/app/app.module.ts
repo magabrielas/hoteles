@@ -19,7 +19,8 @@ import { LoginComponent } from './login/login.component';
 import { UsuarioComponent } from './usuario/usuario.component';
 import { SortableDirective } from './sortable.directive';
 import { CreateUpdatePaisComponent } from './create-update-pais/create-update-pais.component';
-import { DeleteModalComponent } from './delete-modal/delete-modal.component'; 
+import { DeleteModalComponent } from './delete-modal/delete-modal.component';
+import { CreateUpdateUsuarioComponent } from './create-update-usuario/create-update-usuario.component'; 
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
     SortableDirective,
     CreateUpdatePaisComponent,
     DeleteModalComponent,
+    CreateUpdateUsuarioComponent,
   ],
   imports: [
     BrowserModule,
@@ -50,6 +52,7 @@ import { DeleteModalComponent } from './delete-modal/delete-modal.component';
   entryComponents : [
   ModalLoginComponent,
   CreateUpdatePaisComponent,
+  CreateUpdateUsuarioComponent,
   DeleteModalComponent
   ],
   providers: [DecimalPipe],

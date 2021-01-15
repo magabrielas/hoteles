@@ -7,6 +7,9 @@ import {Observable} from 'rxjs';
  import {SortableDirective, SortEvent} from '../sortable.directive';
 
 import { faPlusCircle, faEdit, faTrashAlt} from '@fortawesome/free-solid-svg-icons';
+import {DeleteModalComponent} from '../delete-modal/delete-modal.component';
+import {CreateUpdateUsuarioComponent} from '../create-update-usuario/create-update-usuario.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';//para poder usar la ventana modal
 
 
 @Component({
@@ -28,7 +31,7 @@ export class UsuarioComponent implements OnInit  {
 
 @ViewChildren(SortableDirective) headers: QueryList<SortableDirective>;
 
-  constructor(private service: UsuarioService) {
+  constructor(public service: UsuarioService,private modalService: NgbModal) {
     this.usuarios$ = service.usuarios$;
     this.total$ = service.total$;
     
@@ -48,6 +51,13 @@ onSort({column, direction}: SortEvent) {
 
     this.service.sortColumn = column;
     this.service.sortDirection = direction;
+  }
+
+  onUpdate(){
+    this.modalService.open(CreateUpdateUsuarioComponent);
+  }
+  onDelete(){
+    this.modalService.open(DeleteModalComponent);
   }
 
 }//fin de la clase
